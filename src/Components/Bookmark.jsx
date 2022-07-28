@@ -107,7 +107,6 @@ function BookmarksContainer({bookmarks}){
 				humidity: fc.main.humidity,
 			  });
 			});
-			document.body.classList = result.list[0].weather[0].main;
 			setWeatherData(prev=>{
 				return [...prev, {forecast:hourlyForecast,city:city}]
 			});
@@ -115,6 +114,7 @@ function BookmarksContainer({bookmarks}){
 		  })
 		  .catch((error) => {
 			setIsLoaded(true);
+			console.log(error);
 			setError(error);
 		  });
 	  };

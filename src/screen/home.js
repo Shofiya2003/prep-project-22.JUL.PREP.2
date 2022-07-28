@@ -27,7 +27,11 @@ function App() {
       .then((result) => {
         
         if (result.cod !== "200") {
-
+          if (result["cod"] === "404") {
+            setIsLoaded(true);
+            setFlag(true);
+            return;
+          }
           setIsLoaded(false);
           console.log("hah");
           if(result.name !== null){
@@ -36,10 +40,7 @@ function App() {
             setCity(`${result.name}, ${result.sys.country}`);
             setResults(results);
           }
-          if (result["cod"] == "404") {
-            setIsLoaded(true);
-            setFlag(true);
-          }
+        
           return null;
         }
         console.log("yo");
@@ -121,9 +122,7 @@ function App() {
   }
 
   console.log(results);
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else {
+  
     return (
       <>
         <div className="header">
@@ -139,7 +138,7 @@ function App() {
             }}>{bookmarked?"Remove Bookmark":"Bookmark Location"}</div>:null}
           </div>
           <div className="Results">
-            {!isLoaded && <h2>Loading...</h2>}
+            {!isLoaded && !notfound && <h2>Loading...</h2>}
 
             {/* {isLoaded && results && (
               <>
@@ -152,11 +151,12 @@ function App() {
                 </i>
               </>
             )} */}
-            {isLoaded && forecast && (
+            {isLoaded && forecast && !notfound && (
               <>
                 <Forecast hourlyForecast={forecast} />
               </>
             )}
+            {notfound && <h2>data not available 😞</h2>}
           </div>
           {isLoaded && results && <p className="required-things-heading">Things you should carry 🎒</p>}
           {isLoaded && results && (
@@ -173,6 +173,6 @@ function App() {
       </>
     );
   }
-}
+
 
 export default App;
